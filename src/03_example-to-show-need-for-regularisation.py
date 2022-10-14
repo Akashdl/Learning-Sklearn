@@ -8,15 +8,13 @@
 
 # If in doubt use sort import functionality from vs code
 
-from cProfile import label
-from tkinter.tix import Y_REGION
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
-from sklearn import datasets, linear_model, metrics, model_selection
+from sklearn import linear_model
 
 def test_regularisation():
+    np.random.seed(42)
     X = np.random.uniform(low=0.0, high=10.0, size=25)
 
     y = 3.0 * X
@@ -44,14 +42,16 @@ def test_regularisation():
 
     outlier_linear_regressor = linear_model.LinearRegression()
     outlier_linear_regressor.fit(X=X.reshape(-1,1), y=y_noisy_with_outlier)
-    
+    y_eval_outlier = outlier_linear_regressor.predict(X_eval.reshape(-1,1))
 
     # sns.scatterplot(x=X, y=y) # return matplotlib axes 
     # sns.scatterplot(x=X, y=y_noisy)
     plt.scatter(X, y, label="Clean")
     plt.scatter(X, y_noisy, label="Noisy")
+    plt.scatter(X, y_noisy_with_outlier, label="Noisy with outlier")
     plt.plot(X_eval, y_eval_clean, label="Clean regressor")
     plt.plot(X_eval, y_eval_noisy, label="Noisy regressor")
+    plt.plot(X_eval, y_eval_outlier, label="Noisy regressor with outlier")
     plt.legend()
     plt.show() # use matplotlib to plot
 
